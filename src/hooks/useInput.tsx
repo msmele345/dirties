@@ -25,7 +25,7 @@ const useInput = (
     const resetInput = () => {
         setEnteredValue('');
         setIsTouched(false);
-    }
+    };
 
     return {
         enteredValue,

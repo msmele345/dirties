@@ -21,10 +21,6 @@ const SimpleFormWithHook: FC = (): JSX.Element => {
         resetInput: resetEmailInput
     } = useInput((email: string) => email.includes('@'));
 
-    useEffect(() => {
-
-    }, [enteredNameIsValid, enteredEmailIsValid]);
-
     let formIsValid = false;
 
     if (enteredNameIsValid && enteredEmailIsValid) {

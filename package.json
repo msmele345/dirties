@@ -55,6 +55,7 @@
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "jest": "^27.5.1",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.1",
+    "redux-devtools-extension": "^2.13.9"
   }
 }

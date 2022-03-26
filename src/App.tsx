@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
-import {Box, Container, Typography} from "@mui/material";
 import HomePage from "./features/HomePage/HomePage";
-
+import {Box, Container, Typography} from "@mui/material";
 
 function App() {
     return (
@@ -17,3 +16,4 @@ function App() {
 }
 
 export default App;
+
