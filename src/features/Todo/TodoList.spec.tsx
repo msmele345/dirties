@@ -26,6 +26,9 @@ describe("<TodoList>", () => {
             }
         });
 
+        const header: HTMLElement = screen.getByRole('heading');
+
+        expect(header).toHaveTextContent("TODO LIST:")
         expect(screen.getByText('Clean room')).toBeInTheDocument();
         expect(screen.getByText('Finish work')).toBeInTheDocument();
     });

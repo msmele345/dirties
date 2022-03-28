@@ -5,8 +5,9 @@ export const Action_Types = {
 
 };
 
-
-export const fetchTodoAction = (todos: Todo[]): FetchTodosAction => ({
+export const fetchTodoAction = (
+    todos: Todo[]
+): FetchTodosAction => ({
     type: ActionTypes.fetchTodos,
     payload: todos
 });
