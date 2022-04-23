@@ -18,13 +18,13 @@ const SimpleForm: FC<FormProps> = ({labelText}): JSX.Element => {
 
     let formIsValid = false;
 
-    const inputChangeHandler = (e: any) => {
+    const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value)
     };
 
-    const emailInputChangeHandler = (e: any): void => {
+    const emailInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmailText(e.target.value);
-    }
+    };
 
     const emailTextInputBlurHandler = (e: any) => {
         setEnteredEmailIsTouched(true);

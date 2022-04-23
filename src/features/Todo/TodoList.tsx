@@ -4,10 +4,6 @@ import {useAppSelector} from "../../app/hooks/hooks";
 import {RootState} from "../../app/store";
 
 
-interface TodoListProps {
-    todos: Todo[]
-}
-
 const TodoList: FC = (): JSX.Element => {
 
     const todosFromStore = useAppSelector((state: RootState) => state.todos);

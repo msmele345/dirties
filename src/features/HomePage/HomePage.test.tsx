@@ -1,16 +1,18 @@
 import React from "react";
 import {render, screen} from "../../test-utils/testutils";
 import HomePage from "./HomePage";
-import {fetchTodos, Todo} from "../../api/Api";
+import {fetchTodos, getPotties, Todo} from "../../api/Api";
 import {useDispatch} from "react-redux";
+import {Potty} from "../PottyEvent/PottyEvent";
 
-var mockUseDispatch = useDispatch as jest.MockedFunction<typeof useDispatch>;
+var mockUseDispatch = jest.fn()
 jest.mock('react-redux', () => ({
     ...jest.requireActual("react-redux"),
      // useDispatch: mockUseDispatch
 }));
 jest.mock('../../api/Api');
 const mockFetchTodos = fetchTodos as jest.MockedFunction<typeof fetchTodos>;
+const mockGetPotties = getPotties as jest.MockedFunction<typeof getPotties>;
 describe('<HomePage>',  () => {
 
     const todoList: Todo[] = [
@@ -23,6 +25,19 @@ describe('<HomePage>',  () => {
             id: 2,
             title: "Finish work",
             completed: false
+        }
+    ];
+
+    const pottiesResponse: Potty[] = [
+        {
+            eventId: "1",
+            pottyTime: new Date(2022, 1, 12, 7, 30),
+            type: "wet"
+        },
+        {
+            eventId: "2",
+            pottyTime: new Date(2022, 1, 12, 8, 30),
+            type: "dirty"
         }
     ];
 
@@ -51,5 +66,20 @@ describe('<HomePage>',  () => {
         //     type: ActionTypes.fetchTodos,
         //     payload: todoList
         // })
+    });
+
+    it('should handle potty response', async function () {
+
+        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(todoList));
+        mockGetPotties.mockImplementationOnce(() => Promise.resolve(pottiesResponse));
+
+        render(<HomePage title={"Milas Dirties"}/>);
+
+        const pottyTypeHeaders = await screen.findAllByRole('heading');
+
+        expect(mockGetPotties).toHaveBeenCalled();
+        expect(pottyTypeHeaders.length).toEqual(2);
+        expect(pottyTypeHeaders[0]).toHaveTextContent('wet');
+        expect(pottyTypeHeaders[1]).toHaveTextContent('dirty');
     });
 });

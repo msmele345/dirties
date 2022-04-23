@@ -1,9 +1,11 @@
 import React, {FC, useEffect} from "react";
 import SimpleFormWithHook from "./Form/SImpleFormWithHook";
 import TodoList from "../Todo/TodoList";
-import {fetchTodos, Todo} from "../../api/Api";
+import {fetchTodos, getPotties, Todo} from "../../api/Api";
 import {useAppDispatch} from "../../app/hooks/hooks";
-import {ActionTypes} from "../../actions/types";
+import {ActionTypes} from "../../actions/actionTypes";
+import {Potty} from "../PottyEvent/PottyEvent";
+import PottyList from "../PottyEvent/PottyList";
 
 interface HomeProps {
     title: string
@@ -11,11 +13,11 @@ interface HomeProps {
 
 const HomePage: FC<HomeProps> = ({title}): JSX.Element => {
 
-    const allCaps = (word: string): string => {
+    const dispatch = useAppDispatch();
+
+    const allCapsTitle = (): string => {
         return title && title.toUpperCase();
     };
-
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const getData = async () => {
@@ -25,16 +27,30 @@ const HomePage: FC<HomeProps> = ({title}): JSX.Element => {
                 payload: response
             }) //try the slice way
         };
-        getData()
+        getData();
+    }, []);
+
+    useEffect(() => {
+        const getPottyData = async () => {
+            const response: Potty[] | void = await getPotties();
+            dispatch({
+                type: ActionTypes.fetchPotties,
+                payload: response
+            })
+        };
+        getPottyData();
     }, []);
 
     return (
         <>
             <div style={{paddingBottom: '50px'}}>
-                {allCaps(title)}
+                {allCapsTitle()}
             </div>
             <div>
                 <SimpleFormWithHook/>
+            </div>
+            <div>
+                <PottyList/>
             </div>
             <div>
                 <TodoList/>

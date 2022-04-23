@@ -1,8 +1,10 @@
-import {fetchTodos} from "./Api";
+import {fetchTodos, getPotties} from "./Api";
 import axios from "axios";
 import {cleanup} from "@testing-library/react";
 
-jest.mock('axios');
+jest.mock('axios', () => ({
+    get: jest.fn()
+}));
 const mockedAxios = axios as jest.Mocked<typeof axios>
 describe('Api', function () {
     afterEach(cleanup);
@@ -26,6 +28,29 @@ describe('Api', function () {
          await fetchTodos();
 
         expect(await axios.get)
-            .toHaveBeenCalledWith('https://https://jsonplaceholder.typicode.com/todos');
+            .toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/todos');
+    });
+
+    it('should call the potties endpoint', async function () {
+
+        mockedAxios.get.mockResolvedValueOnce({
+            data: [
+                {
+                    eventId: "1",
+                    pottyTime: new Date(2022, 1, 12, 7, 30),
+                    type: "wet"
+                },
+                {
+                    eventId: "2",
+                    pottyTime: new Date(2022, 1, 12, 8, 30),
+                    type: "dirty"
+                }
+            ]
+        });
+
+        await getPotties();
+
+        expect(await axios.get)
+            .toHaveBeenCalledWith('http://localhost:8080/api/v1/dirties');
     });
 });
