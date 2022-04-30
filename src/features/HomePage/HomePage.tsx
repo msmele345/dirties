@@ -6,6 +6,7 @@ import {useAppDispatch} from "../../app/hooks/hooks";
 import {ActionTypes} from "../../actions/actionTypes";
 import {Potty} from "../PottyEvent/PottyEvent";
 import PottyList from "../PottyEvent/PottyList";
+import NewPottyForm from "./Form/NewPottyForm";
 
 interface HomeProps {
     title: string
@@ -18,17 +19,6 @@ const HomePage: FC<HomeProps> = ({title}): JSX.Element => {
     const allCapsTitle = (): string => {
         return title && title.toUpperCase();
     };
-
-    useEffect(() => {
-        const getData = async () => {
-            const response: Todo[] | void = await fetchTodos()
-            dispatch({
-                type: ActionTypes.fetchTodos,
-                payload: response
-            }) //try the slice way
-        };
-        getData();
-    }, []);
 
     useEffect(() => {
         const getPottyData = async () => {
@@ -47,13 +37,10 @@ const HomePage: FC<HomeProps> = ({title}): JSX.Element => {
                 {allCapsTitle()}
             </div>
             <div>
-                <SimpleFormWithHook/>
+                <NewPottyForm/>
             </div>
             <div>
                 <PottyList/>
-            </div>
-            <div>
-                <TodoList/>
             </div>
         </>
     )

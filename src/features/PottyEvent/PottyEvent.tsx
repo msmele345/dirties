@@ -25,8 +25,7 @@ const PottyEvent: FC<PottyEventProps> = (
         <section>
             <h2>{type}</h2>
             <p>
-                Time:
-                <span>{pottyTime}</span>
+                Time: <span>{pottyTime}</span>
             </p>
             {description && <p>Notes: {description}</p>}
         </section>

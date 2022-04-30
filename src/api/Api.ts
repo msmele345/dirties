@@ -11,9 +11,7 @@ export interface Todo {
 
 ////    "start": "webpack-dev-server --config webpack.dev.js --mode development",
 export const fetchTodos = () => {
-    console.log("ENV", process.env.REACT_APP_SECRET_CODE);
-    console.log("ENV URL", process.env.REACT_APP_BACKEND_URL);
-    console.log("PRCESS ENV", process.env);
+    console.log("PROCESS ENV", process.env);
     return axios.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
         .then((res) => {
             let todos: Todo[] = res.data.slice(0, 5).map((t: Todo) => {
@@ -32,7 +30,10 @@ export const fetchTodos = () => {
 };
 
 export const getPotties = () => {
-    return axios.get<Potty[]>('http://localhost:8080/api/v1/dirties')
+
+    const allPottiesUrl = process.env.REACT_APP_ALL_POTTIES_URL
+
+    return axios.get<Potty[]>(`${allPottiesUrl}`)
         .then((res) => {
             console.log(">>>>>>>>>>>>> POTTY RESPONSE", res.data );
             let potties: Potty[] = res.data.map((p: Potty) => {
