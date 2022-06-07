@@ -7,6 +7,7 @@ describe("<PottyEvent>", () => {
     it('should render the potty', function () {
         render(<PottyEvent pottyTime={"10-1-2020"}  type={"wet"}/>);
 
-        expect(screen.getByText('wet')).toBeInTheDocument();
+        expect(screen.getByText("10-1-2020")).toBeInTheDocument();
+        expect(screen.getByRole('heading')).toHaveTextContent("Wet");
     });
 });

@@ -2,6 +2,7 @@ import React, {FC} from "react";
 import {useAppSelector} from "../../app/hooks/hooks";
 import {RootState} from "../../app/store";
 import PottyEvent, {Potty} from "./PottyEvent";
+import styles from './PottyList.module.css';
 
 
 const PottyList: FC = (): JSX.Element => {
@@ -16,11 +17,11 @@ const PottyList: FC = (): JSX.Element => {
 
     return (
         <div>
-            <h1>Recent Potties</h1>
-            <ul style={{listStyle: 'none'}}>
+            <h2>Recent Potties</h2>
+            <ul className={styles.potties}>
                 { potties.length > 0 &&
-                    potties.map((potty: Potty) => (
-                        <li key={potty.eventId}>
+                    potties.map((potty: Potty, index: number) => (
+                        <li className={styles.item} key={index}>
                             <PottyEvent
                                 type={potty.type}
                                 pottyTime={formatDate(potty.pottyTime)}

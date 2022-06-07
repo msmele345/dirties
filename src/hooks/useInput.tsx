@@ -1,12 +1,17 @@
 import React, {useState} from "react";
 
-interface InputValidator {
-    validate: (val: any) => boolean;
+interface UseInputData {
+    enteredValue: string
+    hasError: boolean
+    valueIsValid: boolean
+    valueChangedHandler: (e: any) => void
+    touchedInputHandler: (e: any) => void
+    resetInput: () => void
 }
 
 const useInput = (
     validateValue: (val: any) => boolean
-) => {
+): UseInputData => {
 
     const [enteredValue, setEnteredValue] = useState('');
     const [isTouched, setIsTouched] = useState(false);

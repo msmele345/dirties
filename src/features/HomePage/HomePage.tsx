@@ -1,7 +1,5 @@
-import React, {FC, useEffect} from "react";
-import SimpleFormWithHook from "./Form/SImpleFormWithHook";
-import TodoList from "../Todo/TodoList";
-import {fetchTodos, getPotties, Todo} from "../../api/Api";
+import React, {FC, useCallback, useEffect} from "react";
+import {getPotties} from "../../api/Api";
 import {useAppDispatch} from "../../app/hooks/hooks";
 import {ActionTypes} from "../../actions/actionTypes";
 import {Potty} from "../PottyEvent/PottyEvent";
@@ -11,14 +9,14 @@ import NewPottyForm from "./Form/NewPottyForm";
 interface HomeProps {
     title: string
 }
-
 const HomePage: FC<HomeProps> = ({title}): JSX.Element => {
 
     const dispatch = useAppDispatch();
 
-    const allCapsTitle = (): string => {
+    //react ensures its the same function every time instead of a new one being created every time this component renders.
+    const allCapsTitle = useCallback((): string => { //if passing a func to a child component like a button - this can be used so that props never change
         return title && title.toUpperCase();
-    };
+    }, []);
 
     useEffect(() => {
         const getPottyData = async () => {

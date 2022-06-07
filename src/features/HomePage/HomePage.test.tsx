@@ -1,7 +1,7 @@
 import React from "react";
 import {render, screen} from "../../test-utils/testutils";
 import HomePage from "./HomePage";
-import {fetchTodos, getPotties, Todo} from "../../api/Api";
+import {fetchTodos, getPotties, Todo, TodoResponse} from "../../api/Api";
 import {useDispatch} from "react-redux";
 import {Potty} from "../PottyEvent/PottyEvent";
 
@@ -43,7 +43,9 @@ describe('<HomePage>',  () => {
 
     it('render the text', async function () {
 
-        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(todoList));
+        const response: TodoResponse = { data: todoList, statusCode: 200}
+
+        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(response));
 
         render(<HomePage title={"Milas Dirties"}/>);
 
@@ -52,7 +54,9 @@ describe('<HomePage>',  () => {
 
     it('should call dispatch on page load', async function () {
 
-        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(todoList));
+        const response: TodoResponse = { data: todoList, statusCode: 200}
+
+        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(response));
 
         render(<HomePage title={"Dirities"}/>);
 
@@ -70,7 +74,9 @@ describe('<HomePage>',  () => {
 
     it('should handle potty response', async function () {
 
-        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(todoList));
+        const response: TodoResponse = { data: todoList, statusCode: 200}
+
+        mockFetchTodos.mockImplementationOnce(() => Promise.resolve(response));
         mockGetPotties.mockImplementationOnce(() => Promise.resolve(pottiesResponse));
 
         render(<HomePage title={"Milas Dirties"}/>);

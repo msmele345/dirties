@@ -1,7 +1,7 @@
 import React, {FC, PropsWithChildren} from "react";
 
 export interface Potty {
-    eventId: string,
+    eventId?: string,
     pottyTime?: Date,
     type: string,
     description?: string,
@@ -21,14 +21,15 @@ const PottyEvent: FC<PottyEventProps> = (
         description
     }
 ): JSX.Element => {
+
+    const capitalize = (word: string): string => word[0].toUpperCase() + word.slice(1)
+
     return (
-        <section>
-            <h2>{type}</h2>
-            <p>
-                Time: <span>{pottyTime}</span>
-            </p>
+        <div>
+            <h2>{capitalize(type)}</h2>
+            Time: <span>{pottyTime}</span>
             {description && <p>Notes: {description}</p>}
-        </section>
+        </div>
     )
 };
 

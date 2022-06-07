@@ -4,15 +4,9 @@ import {Potty} from "../features/PottyEvent/PottyEvent";
 export enum ActionTypes {
     fetchTodos,
     fetchPotties = "POTTIES_API_CALL_SUCCESS",
+    saveNewPotty = "NEW_POTTY_SUCCESS"
 
 }
-
-export const Dirty_Types = {
-    GET_DIRTIES_SUCCESS: "API_CALL_SUCCESS",
-    GET_DIRTIES_REQUEST: "API_CALL_REQUEST",
-    DIRTIES_ERROR: 'restaurants/restaurants_error'
-}
-
 
 export interface FetchTodosActionType {
     type: ActionTypes.fetchTodos,
@@ -22,5 +16,10 @@ export interface FetchTodosActionType {
 export interface FetchPottiesActionType {
     type: ActionTypes.fetchPotties,
     payload: Potty[]
+}
+
+export interface SavePottySuccessActionType {
+    type: ActionTypes.saveNewPotty,
+    payload: Potty
 }
 

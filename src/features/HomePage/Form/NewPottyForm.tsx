@@ -1,7 +1,16 @@
 import React, {FC} from "react";
 import useInput from "../../../hooks/useInput";
+import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../../app/hooks/hooks";
+import {Potty} from "../../PottyEvent/PottyEvent";
+import {NewPottyResponse, saveNewPotty} from "../../../api/Api";
+import {ActionTypes} from "../../../actions/actionTypes";
+import {savePottySuccess} from "../../../actions/actions";
+import styles from './NewPotty.module.css';
 
 const NewPottyForm: FC = (): JSX.Element => {
+
+    const dispatch = useAppDispatch();
 
     const {
         enteredValue: enteredPottyType,
@@ -40,22 +49,35 @@ const NewPottyForm: FC = (): JSX.Element => {
         formIsValid = true;
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
 
         if(pottyTimeHasError || pottyTypeHasError|| pottyNotesHaveError) {
             return;
         }
 
-        console.log(">>>>>>>>>>>>>",  enteredPottyType);
+        // console.log(">>>>>>>>>>>>> Type ",  enteredPottyType);
+        console.log(">>>>>>>>>>>>> Time ",  enteredPottyTime);
+        // console.log(">>>>>>>>>>>>> Notes ",  enteredPottyNotes);
+        const newPottyPayload: Potty = {
+            pottyTime: new Date(enteredPottyTime),
+            type: enteredPottyType,
+            description: enteredPottyNotes
+        };
+        console.log(">>>>>>>>>>>>> SAVE PAYLOAD",  newPottyPayload);
 
+        const response: NewPottyResponse = await saveNewPotty(newPottyPayload);
+
+        if (response.status === 200 &&  response.data) {
+            dispatch(savePottySuccess(newPottyPayload))
+        }
         resetPottyTypeInput();
         resetPottyNotesInput();
         resetPottyTimeInput();
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
             <div className={typeInputClasses}>
                 <label htmlFor={'pottyType'}>Potty Type</label>
                 <input
@@ -70,13 +92,13 @@ const NewPottyForm: FC = (): JSX.Element => {
             <div className={timeInputClasses}>
                 <label htmlFor={'pottyTime'}>Potty Time</label>
                 <input
-                    type='text'
+                    type='datetime-local'
                     id={'pottyTime'}
                     onChange={pottyTimeChangedHandler}
                     onBlur={pottyTimeTouchedHandler}
                     value={enteredPottyTime}
                 />
-                {pottyTimeHasError && <p className={'error-text'}>Please Enter a Valid Potty Type</p>}
+                {pottyTimeHasError && <p className={'error-text'}>Please Enter a Valid Potty Time</p>}
             </div>
             <div className={notesInputClasses}>
                 <label htmlFor={'pottyNotes'}>Notes</label>
@@ -87,7 +109,7 @@ const NewPottyForm: FC = (): JSX.Element => {
                     onBlur={pottyNotesTouchedHandler}
                     value={enteredPottyNotes}
                 />
-                {pottyNotesHaveError && <p className={'error-text'}>Please Enter a Valid Potty Type</p>}
+                {pottyNotesHaveError && <p className={'error-text'}>Please Enter a Valid Potty Description</p>}
             </div>
             <div className="form-actions">
                 <button>
