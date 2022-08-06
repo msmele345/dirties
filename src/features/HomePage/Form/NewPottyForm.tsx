@@ -1,10 +1,8 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import useInput from "../../../hooks/useInput";
-import {useDispatch} from "react-redux";
 import {useAppDispatch} from "../../../app/hooks/hooks";
 import {Potty} from "../../PottyEvent/PottyEvent";
 import {NewPottyResponse, saveNewPotty} from "../../../api/Api";
-import {ActionTypes} from "../../../actions/actionTypes";
 import {savePottySuccess} from "../../../actions/actions";
 import styles from './NewPotty.module.css';
 
@@ -39,36 +37,34 @@ const NewPottyForm: FC = (): JSX.Element => {
         resetInput: resetPottyTimeInput
     } = useInput((text: string) => text.trim() !== '');
 
+    const [enteredDate, setEnteredDate] = useState<Date>(new Date());
+
     const typeInputClasses = pottyTypeHasError ? 'form-control invalid' : 'form-control';
     const timeInputClasses = pottyTimeHasError ? 'form-control invalid' : 'form-control';
     const notesInputClasses = pottyNotesHaveError ? 'form-control invalid' : 'form-control';
 
     let formIsValid = false;
 
-    if(enteredPottyTypeIsValid && enteredPottyNotesAreValid && enteredPottyTimeIsValid) {
+    if (enteredPottyTypeIsValid && enteredPottyNotesAreValid && enteredPottyTimeIsValid) {
         formIsValid = true;
     }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if(pottyTimeHasError || pottyTypeHasError|| pottyNotesHaveError) {
+        if (pottyTimeHasError || pottyTypeHasError || pottyNotesHaveError) {
             return;
         }
 
-        // console.log(">>>>>>>>>>>>> Type ",  enteredPottyType);
-        console.log(">>>>>>>>>>>>> Time ",  enteredPottyTime);
-        // console.log(">>>>>>>>>>>>> Notes ",  enteredPottyNotes);
         const newPottyPayload: Potty = {
             pottyTime: new Date(enteredPottyTime),
             type: enteredPottyType,
             description: enteredPottyNotes
         };
-        console.log(">>>>>>>>>>>>> SAVE PAYLOAD",  newPottyPayload);
 
         const response: NewPottyResponse = await saveNewPotty(newPottyPayload);
 
-        if (response.status === 200 &&  response.data) {
+        if (response.status === 200 && response.data) {
             dispatch(savePottySuccess(newPottyPayload))
         }
         resetPottyTypeInput();
@@ -77,49 +73,66 @@ const NewPottyForm: FC = (): JSX.Element => {
     };
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={typeInputClasses}>
-                <label htmlFor={'pottyType'}>Potty Type</label>
-                <input
-                    type='text'
-                    id={'pottyType'}
-                    onChange={pottyTypeChangedHandler}
-                    onBlur={pottyTypeTouchedHandler}
-                    value={enteredPottyType}
-                />
-                {pottyTypeHasError && <p className={'error-text'}>Please Enter a Valid Potty Type</p>}
-            </div>
-            <div className={timeInputClasses}>
-                <label htmlFor={'pottyTime'}>Potty Time</label>
-                <input
-                    type='datetime-local'
-                    id={'pottyTime'}
-                    onChange={pottyTimeChangedHandler}
-                    onBlur={pottyTimeTouchedHandler}
-                    value={enteredPottyTime}
-                />
-                {pottyTimeHasError && <p className={'error-text'}>Please Enter a Valid Potty Time</p>}
-            </div>
-            <div className={notesInputClasses}>
-                <label htmlFor={'pottyNotes'}>Notes</label>
-                <input
-                    type='text'
-                    id={'pottyNotes'}
-                    onChange={pottyNotesChangedHandler}
-                    onBlur={pottyNotesTouchedHandler}
-                    value={enteredPottyNotes}
-                />
-                {pottyNotesHaveError && <p className={'error-text'}>Please Enter a Valid Potty Description</p>}
-            </div>
-            <div className="form-actions">
-                <button>
-                    {/*// disabled={!formIsValid}*/}
-                    {/*// style={{backgroundColor: !formIsValid ? 'gray' : 'MediumVioletRed'}}*/}
-                    Submit
-                </button>
-            </div>
-        </form>
+        <div>
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={typeInputClasses}>
+                    <label htmlFor={'pottyType'}>Potty Type</label>
+                    <input
+                        autoFocus
+                        type='text'
+                        id={'pottyType'}
+                        onChange={pottyTypeChangedHandler}
+                        onBlur={pottyTypeTouchedHandler}
+                        value={enteredPottyType}
+                    />
+                    {pottyTypeHasError && <p className={'error-text'}>Please Enter a Valid Potty Type</p>}
+                </div>
+                <div className={timeInputClasses}>
+                    <label htmlFor={'pottyTime'}>Potty Time</label>
+                    <input
+                        type='datetime-local'
+                        id={'pottyTime'}
+                        onChange={pottyTimeChangedHandler}
+                        onBlur={pottyTimeTouchedHandler}
+                        value={enteredPottyTime}
+                        name='date-picker'
+                    />
+                    {pottyTimeHasError && <p className={'error-text'}>Please Enter a Valid Potty Time</p>}
+                </div>
+                <div className={notesInputClasses}>
+                    <label htmlFor={'pottyNotes'}>Notes</label>
+                    <input
+                        type='text'
+                        id={'pottyNotes'}
+                        onChange={pottyNotesChangedHandler}
+                        onBlur={pottyNotesTouchedHandler}
+                        value={enteredPottyNotes}
+                    />
+                    {pottyNotesHaveError && <p className={'error-text'}>Please Enter a Valid Potty Description</p>}
+                </div>
+                <div className="form-actions">
+                    <button>
+                        {/*// disabled={!formIsValid}*/}
+                        {/*// style={{backgroundColor: !formIsValid ? 'gray' : 'MediumVioletRed'}}*/}
+                        Submit
+                    </button>
+                </div>
+
+            </form>
+        </div>
     )
 };
 
 export default NewPottyForm;
+
+/*
+*
+*            <div className={styles.datepicker}>
+                <DatePicker
+                    selected={enteredDate}
+                    onChange={(date: Date) => setEnteredDate(date)}
+                    showTimeSelect
+                />
+            </div>
+*
+* */

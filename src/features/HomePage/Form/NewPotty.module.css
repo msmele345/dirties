@@ -35,6 +35,11 @@
     cursor: pointer;
 }
 
+.datepicker {
+    position: relative;
+
+}
+
 .form button:hover,
 .form button:active {
     background-color: #ebc002;

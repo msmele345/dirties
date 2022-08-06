@@ -17,7 +17,7 @@ const PottyList: FC = (): JSX.Element => {
 
     return (
         <div>
-            <h2>Recent Potties</h2>
+            <h2 className={styles.header}>Recent Potties</h2>
             <ul className={styles.potties}>
                 { potties.length > 0 &&
                     potties.map((potty: Potty, index: number) => (

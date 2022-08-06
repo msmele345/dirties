@@ -67,10 +67,8 @@ export interface NewPottyResponse {
 }
 
 export const saveNewPotty = (potty: Potty): Promise<NewPottyResponse> => {
-    console.log(">>>>>>>>>>>>> BEFORE SAVE POTTY CALL TIME", potty.pottyTime);
     return axios.post<Potty>('http://localhost:8080/api/v1/dirties', potty)
         .then((res: AxiosResponse<Potty>) => {
-            console.log(">>>>>>>>>>>>> AFTER SAVE NEWPOTTY CALL TIME", res.data.pottyTime);
             const newPotty = {
                 eventId: res.data.eventId,
                 pottyTime: res.data.pottyTime,
